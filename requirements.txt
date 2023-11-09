@@ -1,11 +1,9 @@
 transformers[sentencepiece]~=4.33.0
 datasets~=2.14.0
 accelerate~=0.23.0
-mlflow~=2.7.0
+wandb~=0.15.0
 mdutils~=1.6.0
 scikit-learn~=1.2.0
 tqdm~=4.66.0
 #notebook~=7.0.0
-
-
 
