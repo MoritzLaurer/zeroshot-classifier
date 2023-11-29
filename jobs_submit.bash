@@ -8,22 +8,21 @@
 
 
 # Iterate through all datasets for heldout testing
-#dataset_name_heldout=(
-#    'wellformedquery' 'financialphrasebank' 'rottentomatoes' 'amazonpolarity'
-#    'imdb' 'appreviews' 'yelpreviews' 'wikitoxic_toxicaggregated'
-#    'wikitoxic_obscene' 'wikitoxic_threat' 'wikitoxic_insult'
-#    'wikitoxic_identityhate' 'hateoffensive' 'hatexplain'
-#    'trueteacher' 'spam' 'massive' 'banking77' 'emotiondair'
-#    'emocontext' 'empathetic' 'agnews' 'yahootopics'
-#    'biasframes_offensive' 'biasframes_sex' 'biasframes_intent'
-#    "manifesto" "capsotu"
-#)
+dataset_name_heldout=(
+    'wellformedquery' 'financialphrasebank' 'rottentomatoes' 'amazonpolarity'
+    'imdb' 'appreviews' 'yelpreviews' 'wikitoxic_toxicaggregated'
+    'wikitoxic_obscene' 'wikitoxic_threat' 'wikitoxic_insult'
+    'wikitoxic_identityhate' 'hateoffensive' 'hatexplain'
+    'trueteacher' 'spam' 'massive' 'banking77' 'emotiondair'
+    'emocontext' 'empathetic' 'agnews' 'yahootopics'
+    'biasframes_offensive' 'biasframes_sex' 'biasframes_intent'
+    "manifesto" "capsotu"
+)
 
-# do not upload these to the hub
-#for dataset_name in "${dataset_name_heldout[@]}"
-#do
-#    sbatch --output=./zeroshot/logs/logs_sbatch_$dataset_name.txt ./zeroshot/job_run.bash "$dataset_name" True False
-#done
+for dataset_name in "${dataset_name_heldout[@]}"
+do
+    sbatch --output=./zeroshot/logs/logs_sbatch_$dataset_name.txt ./zeroshot/job_run.bash "$dataset_name" True True
+done
 
 
 # two runs with all data (not heldout) or with only nli data

@@ -1,6 +1,6 @@
 #!/bin/bash
 #Set batch job requirements
-#SBATCH -t 15:00:00
+#SBATCH -t 20:00:00
 #SBATCH --partition=gpu
 #SBATCH --gpus=1
 #SBATCH --mail-type=BEGIN,END,FAIL
