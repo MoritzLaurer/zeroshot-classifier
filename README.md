@@ -1,7 +1,8 @@
 ## Building an efficient zero-shot classifier
 
-This repository contains the code for preparing the data and training the zeroshot models in my
-[Zeroshot Classifiers Collection](https://huggingface.co/collections/MoritzLaurer/zeroshot-classifiers-6548b4ff407bb19ff5c3ad6f).
+This repository contains the code for preparing the data and training the zeroshot models described in the paper "[Building Efficient Universal Classifiers with Natural Language Inference
+](https://arxiv.org/abs/2312.17543)". The models can be downloaded via my
+[Hugging Face Zeroshot Classifiers Collection](https://huggingface.co/collections/MoritzLaurer/zeroshot-classifiers-6548b4ff407bb19ff5c3ad6f).
 
 The models are designed for zeroshot classification with the Hugging Face pipeline. 
 
@@ -64,8 +65,8 @@ For metrics and more details see the model cards in my
 
 
 ### Call for input
-I plan on updating the code and model with more datasets.  
-- If you know good datasets and want them to be included in the next version, let me know!
+I might update the code and models with more datasets.  
+- If you know good datasets and want them to be included in the next version, let me know.
 You can either open an issue in this repo or contact me on
 [LinkedIn](https://www.linkedin.com/in/moritz-laurer/) or [Twitter/X](https://twitter.com/MoritzLaurer).
 - If you spot errors in my code or have ideas for improvements, please also let me know. 
