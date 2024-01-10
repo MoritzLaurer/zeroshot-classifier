@@ -14,7 +14,7 @@ Note that this notebook was written and tested in Google Colab to increase repro
 """
 
 # for versioning of experiments with W&B
-DATE = 20231127
+DATE = 20240109
 
 SEED_GLOBAL = 42
 
@@ -26,12 +26,12 @@ else:
 
 if USING_COLAB:
     # comment this away this if you are not using colab
-    """!pip install transformers[sentencepiece]~=4.33.0 -q
+    !pip install transformers[sentencepiece]~=4.33.0 -q
     !pip install datasets~=2.14.0 -q
     !pip install accelerate~=0.23.0 -q
     !pip install wandb~=0.16.0 -q
     !pip install mdutils~=1.6.0 -q
-    !pip install scikit-learn~=1.2.0 -q"""
+    !pip install scikit-learn~=1.2.0 -q
 
 ## load packages
 import pandas as pd
@@ -116,7 +116,7 @@ parser.add_argument('-upload', '--upload_to_hub',type=str2bool, default=False,
 
 if USING_COLAB:
     args = parser.parse_args([
-        "--dataset_name_heldout", "none"  #"all_except_nli",
+        "--dataset_name_heldout", "none",  #"all_except_nli",
         # comment following arguments away to set them to False
         "--do_train", "True",
         "--upload_to_hub", "True"
@@ -174,7 +174,7 @@ print(dataset_train_filt.to_pandas().task_name.value_counts())
 ### Load model and tokenizer
 
 if args.do_train:
-    model_name = "microsoft/deberta-v3-base"  #"microsoft/deberta-v3-large"  #"microsoft/deberta-v3-base"
+    model_name = "microsoft/xtremedistil-l6-h256-uncased"  #"microsoft/deberta-v3-xsmall"  #"microsoft/deberta-v3-large"  #"microsoft/deberta-v3-base" # microsoft/xtremedistil-l6-h256-uncased
 else:
     # can only comprehensively test binary NLI models, because NLI test datasets are binarized
     model_name = "MoritzLaurer/deberta-v3-base-mnli-fever-anli-ling-wanli-binary"  #"facebook/bart-large-mnli"  #"sileod/deberta-v3-base-tasksource-nli"  #"MoritzLaurer/DeBERTa-v3-base-mnli-fever-docnli-ling-2c"
@@ -371,10 +371,12 @@ eval_batch = 64 if "large" in model_name else 64*2
 per_device_train_batch_size = 8 if "large" in model_name else 32
 gradient_accumulation_steps = 4 if "large" in model_name else 1
 
-if USING_COLAB:
-    per_device_train_batch_size = int(per_device_train_batch_size / 4)
-    gradient_accumulation_steps = int(gradient_accumulation_steps * 4)
-    eval_batch = int(eval_batch / 32) if "large" in model_name else int(eval_batch / 8)
+#if USING_COLAB:
+    #per_device_train_batch_size = int(per_device_train_batch_size / 4)
+    #gradient_accumulation_steps = int(gradient_accumulation_steps * 4)
+    #eval_batch = int(eval_batch / 32) if "large" in model_name else int(eval_batch / 8)
+
+hub_model_id = f'MoritzLaurer/{model_name.split("/")[-1]}-zeroshot-v1.1-{args.dataset_name_heldout}'
 
 train_args = TrainingArguments(
     output_dir=training_directory,
@@ -406,7 +408,7 @@ train_args = TrainingArguments(
     report_to="all",  # "all"
     run_name=run_name,
     push_to_hub=True,  # does not seem to work if save_strategy="no"
-    hub_model_id=f'MoritzLaurer/{model_name.split("/")[-1]}-zeroshot-v1.1-{args.dataset_name_heldout}',
+    hub_model_id=hub_model_id,
     hub_token=config.HF_ACCESS_TOKEN,
     hub_strategy="end",
     hub_private_repo=True,
@@ -492,6 +494,11 @@ wandb.finish()
 if args.upload_to_hub and args.do_train:
 
     trainer.push_to_hub(commit_message="End of training")
+
+    # tokenizer needs to be uploaded separately to create tokenizer.json
+    # otherwise only tokenizer_config.json is created and pip install sentencepiece is required
+    tokenizer.push_to_hub(repo_id=hub_model_id, use_temp_dir=True, private=True, use_auth_token=config.HF_ACCESS_TOKEN)
+
 
     # to save best model to disk
     """
