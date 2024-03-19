@@ -75,3 +75,8 @@ You can either open an issue in this repo or contact me on
 ### License
 The code is under the Apache-2.0 license. The datasets used for training, however,
 have a mix of different licenses. 
+
+### Repository DOI
+Unique identifier for this code repository: 
+[![DOI](https://zenodo.org/badge/697847474.svg)](https://zenodo.org/doi/10.5281/zenodo.10839446)
+
