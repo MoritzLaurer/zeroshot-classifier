@@ -1,0 +1,7 @@
+test.ipynb
+.DS_Store
+
+# Virtual environments
+.env
+.venv
+
